@@ -1,6 +1,6 @@
 {
   "name": "code-picasso",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Obfuscates your JavaScript file into an unreadable ASCII art skull.",
   "main": "index.js",
   "scripts": {
