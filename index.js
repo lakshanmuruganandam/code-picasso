@@ -11,7 +11,7 @@ const program = new Command();
 
 program
   .name('code-picasso')
-  .description('Obfuscates your JavaScript file into an unreadable ASCII art skull.')
+  .description('Obfuscates your JavaScript file into an unreadable ASCII art skull that actually executes.')
   .argument('<file>', 'The JS file to ruin')
   .version('1.0.0')
   .parse(process.argv);
@@ -37,17 +37,16 @@ if (!fs.existsSync(fullPath)) {
   process.exit(1);
 }
 
-// A simple ASCII skull template where 'X' will be replaced by code blocks
 const skullTemplate = [
-  "      XXXXXXX      ",
-  "    XXXXXXXXXXX    ",
-  "   XXXXXXXXXXXXX   ",
-  "  XXX  XXXXX  XXX  ",
-  "  XXX  XXXXX  XXX  ",
-  "   XXXXXXXXXXXXX   ",
-  "    XXXXXXXXXXX    ",
-  "      XXXXXXX      ",
-  "       X X X       "
+  "        XXXXXXX        ",
+  "      XXXXXXXXXXX      ",
+  "     XXXXXXXXXXXXX     ",
+  "    XXXX  XXX  XXXX    ",
+  "    XXXX  XXX  XXXX    ",
+  "     XXXXXXXXXXXXX     ",
+  "      XXXXXXXXXXX      ",
+  "        XXXXXXX        ",
+  "         X X X         "
 ];
 
 const run = async () => {
@@ -63,27 +62,25 @@ const run = async () => {
     process.exit(0);
   }
 
-  let content = fs.readFileSync(fullPath, 'utf8');
+  const content = fs.readFileSync(fullPath, 'utf8');
   
-  // Strip newlines and spaces to pack the code
-  let packedCode = content.replace(/\\s+/g, ' ');
+  // Convert the actual code into a base64 payload
+  const b64 = Buffer.from(content, 'utf8').toString('base64');
   let codeIndex = 0;
 
-  let art = "";
-  
-  // Prepend a block comment to make it valid JS if we need to pad
-  art += "/* Art by @lakshanmuruganandam */\n";
+  // We will build a template literal that contains the base64 string shaped as a skull
+  let art = "const _ = `\n";
 
   for (let line of skullTemplate) {
     let outputLine = "";
     for (let char of line) {
       if (char === 'X') {
-        if (codeIndex < packedCode.length) {
-          outputLine += packedCode[codeIndex];
+        if (codeIndex < b64.length) {
+          outputLine += b64[codeIndex];
           codeIndex++;
         } else {
-          // Pad with safe comments if we run out of code
-          outputLine += "/*X*/";
+          // Pad with safe base64 characters (like 'A' which is 0) to maintain the skull shape
+          outputLine += "A";
         }
       } else {
         outputLine += " ";
@@ -92,15 +89,20 @@ const run = async () => {
     art += outputLine + "\n";
   }
 
-  // If there's leftover code, just dump it at the bottom
-  if (codeIndex < packedCode.length) {
-    art += "\n" + packedCode.substring(codeIndex);
+  art += "`;\n";
+
+  // If there's leftover base64 payload, just dump it in a blob at the bottom
+  if (codeIndex < b64.length) {
+    art += "const __ = `" + b64.substring(codeIndex) + "`;\n";
+    art += "eval(Buffer.from(_.replace(/\\s/g, '') + __, 'base64').toString('utf8'));\n";
+  } else {
+    art += "eval(Buffer.from(_.replace(/\\s/g, ''), 'base64').toString('utf8'));\n";
   }
 
   fs.writeFileSync(fullPath, art, 'utf8');
 
   console.log(pc.green(`\n✔ Masterpiece created!`));
-  console.log(pc.white(`Open ${targetFile} in your editor. It is a work of art.`));
+  console.log(pc.white(`Open ${targetFile} in your editor. It is a work of art and 100% executable.`));
   console.log(pc.cyan('\nArchitected by @lakshanmuruganandam\n'));
 };
 
