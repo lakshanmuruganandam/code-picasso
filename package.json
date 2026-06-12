@@ -1,0 +1,32 @@
+{
+  "name": "code-picasso",
+  "version": "1.0.0",
+  "description": "Obfuscates your JavaScript file into an unreadable ASCII art skull.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "obfuscate",
+    "ascii",
+    "art",
+    "code",
+    "javascript",
+    "cli",
+    "joke"
+  ],
+  "author": "Lakshan Muruganandam <lakshan@example.com>",
+  "license": "MIT",
+  "dependencies": {
+    "boxen": "^8.0.1",
+    "cli-spinners": "^3.4.0",
+    "commander": "^15.0.0",
+    "inquirer": "^14.0.2",
+    "log-update": "^8.0.0",
+    "picocolors": "^1.1.1"
+  },
+  "type": "module",
+  "bin": {
+    "code-picasso": "./index.js"
+  }
+}
