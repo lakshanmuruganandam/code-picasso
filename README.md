@@ -1,6 +1,6 @@
 # code-picasso
 
-Obfuscates your JavaScript file into an unreadable ASCII art skull.
+Obfuscates your JavaScript file into an unreadable ASCII art skull that actually executes perfectly.
 
 ## 🚀 Usage
 
