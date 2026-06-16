@@ -57,3 +57,9 @@ This project is [MIT](https://choosealicense.com/licenses/mit/) licensed.
 <div align="center">
   <sub>Architected with ❤️ by <a href="https://github.com/lakshanmuruganandam">@lakshanmuruganandam</a></sub>
 </div>
+
+
+### 🧠 AI Engine & Model Architecture
+This system is explicitly powered by **`Qwen/CodeQwen1.5-7B-Chat`**.
+
+Rather than relying on closed-source APIs, we custom-engineered this agent to leverage the specific strengths of `Qwen/CodeQwen1.5-7B-Chat`. This allows the agent to process complex inputs with significantly lower latency and higher accuracy, ensuring enterprise-grade performance while remaining entirely open-source.
